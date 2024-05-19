@@ -3,7 +3,7 @@ package Array;
 public class MovieTheatre {
     // The status of all seats is stored in a 2d array
     // The values are boolean - if true, a seat is reserved
-    boolean[][] theatreSeats = null;
+    boolean[][] theatreSeats;
 
     public MovieTheatre(int rowCount, int columnCount) {
         // As discussed in class, the values in a boolean array will default to false

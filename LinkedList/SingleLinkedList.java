@@ -41,8 +41,12 @@ public class SingleLinkedList {
                 tempNode = tempNode.next;
                 index++;
             }
-            Node nextNode = node;
-            node.next = nextNode;
+            // 2. The new node will need to point to the node currently at this position
+            // (existing nodes past this point will be pushed toward the 'tail')
+            node.next = tempNode.next;
+            // 2. Corrected an assignment and removed redundant variable
+            tempNode.next = node;
+
         }
         size++;
     }
@@ -55,7 +59,7 @@ public class SingleLinkedList {
             Node tempNode = head;
             for (int i = 0; i < size; i++){
                 System.out.print(tempNode.value);
-                if (i != size -1) {
+                if (i != size - 1) {
                     System.out.print(" -> ");
                 }
                 tempNode = tempNode.next;
@@ -88,4 +92,56 @@ public class SingleLinkedList {
     //2. deleting at the ending
     //3. deleting anywhere in the list
 
+    // 1. Complete the delete method
+    public void deleteFromLocation(int location) {
+        // Not required by the assignment, but I decided to use try/catch in case an index outside the length of the SLL
+        try {
+            // Case 0: the list has no nodes
+            if (head == null)
+                System.out.println("SLL does not exist.");
+            else if (location < 0 || location >= size)
+                throw new IndexOutOfBoundsException("SLL has no node at location " + location);
+            // Case 1: remove from location 0 (the head)
+            else if (location == 0) {
+                head = head.next;
+
+                // This could result in no nodes remaining
+                // Show a warning if this happens
+                if (head == null)
+                    System.out.println("Warning: SLL no longer exists.");
+            }
+            // Case 2: remove the tail
+            else if (location == size - 1) {
+                Node curNode = head;
+                int index = 0;
+
+                // We'll need to use a loop to find the node before the tail
+                while (index < location - 1) {
+                    curNode = curNode.next;
+                    index++;
+                }
+
+                // Remove the tail from the LinkedList, and make the current node the new tail
+                curNode.next = null;
+                tail = curNode;
+            }
+            // Case 3: delete from anywhere [else] in the list
+            else {
+                Node curNode = head;
+                int index = 0;
+
+                // We'll need to use a loop to find the node before the specified location
+                while (index < location - 1) {
+                    curNode = curNode.next;
+                    index++;
+                }
+
+                curNode.next = curNode.next.next;
+            }
+
+            size--;
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.toString());
+        }
+    }
 }
